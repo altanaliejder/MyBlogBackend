@@ -1,6 +1,9 @@
 package com.example.myblog.entities.concretes;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -12,8 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
 
+@Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","stories"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +25,6 @@ public class User {
     private Long id;
 
     @Column(name = "username",unique = true,nullable = false)
-
     @NotNull
     @NotBlank
     private String username;
@@ -36,6 +39,7 @@ public class User {
     @Column(name = "password",nullable = false)
     @NotNull
     @NotBlank
+    @Length(min = 4)
     private String password;
 
     @Column(name = "name",nullable = false)

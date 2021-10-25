@@ -15,5 +15,7 @@ public interface StoryService  {
     DataResult<List<Story>> getAll();
     DataResult<Story> getStoryById(Long storyId);
     DataResult<List<Story>> getStoryBySubjectId(Long subjectId);
+    DataResult<List<Story>> searchStories(String keyword);
+    DataResult<List<Story>> getStoryByUserId(Long userId);
 
 }

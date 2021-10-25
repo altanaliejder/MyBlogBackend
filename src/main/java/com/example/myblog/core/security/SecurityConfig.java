@@ -16,6 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -44,12 +47,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/configuration/security",
                 "/swagger-ui.html",
                 "/webjars/**").permitAll();
-        http.authorizeRequests().antMatchers("/api/login/**","/api/token/refresh/**").permitAll();
+        http.cors().and();
+        http.authorizeRequests().antMatchers("/api/login/**").permitAll();
        http.authorizeRequests().antMatchers(GET,"/api/users/**").permitAll(); //.hasAnyAuthority("ROLE_USER");
         http.authorizeRequests().antMatchers(POST,"/api/users/**").permitAll();
         http.authorizeRequests().antMatchers(GET,"/api/**").permitAll();
         http.authorizeRequests().antMatchers(POST,"/api/**").permitAll();
-        http.authorizeRequests().antMatchers(POST,"/api/users/add/**").permitAll(); //.hasAnyAuthority("ROLE_ADMIN");
+        /*http.authorizeRequests().antMatchers(GET,"/api/stories/**").hasAnyAuthority("ROLE_USER");
+        http.authorizeRequests().antMatchers(POST,"/api/users/add/**").permitAll(); //.hasAnyAuthority("ROLE_ADMIN");*/
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -59,6 +64,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception{
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
     }
 
 }

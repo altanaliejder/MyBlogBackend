@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,6 +42,7 @@ public class UserManager implements UserService, UserDetailsService {
     }
 
     @Override
+
     public Result add(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         this.userDao.save(user);

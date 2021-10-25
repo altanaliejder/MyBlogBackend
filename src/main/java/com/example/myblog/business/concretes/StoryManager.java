@@ -56,4 +56,17 @@ public class StoryManager implements StoryService {
     public DataResult<List<Story>> getStoryBySubjectId(Long subjectId) {
         return new SuccessDataResult<List<Story>>(this.storyDao.getStoryBySubjectId(subjectId));
     }
+
+    @Override
+    public DataResult<List<Story>> searchStories(String keyword) {
+        if(keyword!=null){
+            return new SuccessDataResult<List<Story>>(this.storyDao.searchStories(keyword));
+        }
+        return new SuccessDataResult<List<Story>>(this.storyDao.findAll());
+    }
+
+    @Override
+    public DataResult<List<Story>> getStoryByUserId(Long userId) {
+        return new SuccessDataResult<List<Story>>(this.storyDao.getStoriesByUserId(userId));
+    }
 }
